@@ -1,7 +1,21 @@
 clear;
-% created environment grid based
-env = rlPredefinedEnv("BasicGridworld");
+% Example for basic env = rlPredefinedEnv("BasicGridworld");
 
+% created environment grid based
+GW = createGridWorld(10,10);  % with default NSEW actions
+
+GW.TerminalStates = '[10,10]';
+GW.ObstacleStates = ["[5,2]";"[5,3]";"[5,4]";"[5,5]";"[7,7]";"[7,8]";
+"[7,9]";"[7,10]"];
+
+nS = numel(GW.States);
+nA = numel(GW.Actions);
+GW.R = -1*ones(nS,nS,nA);
+GW.R(:,state2idx(GW,GW.TerminalStates),:) = 10;
+
+disp(GW)
+
+env = rlMDPEnv(GW);
 
 % created q table
 obsInfo = getObservationInfo(env);
